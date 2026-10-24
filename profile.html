@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A professional System Administration career pathway portfolio.">
+  <title>SysPath | System Administration Career Portfolio</title>
+  <style>
+    :root {
+      --navy: #102a43;
+      --blue: #1677ff;
+      --blue-dark: #0b5ec7;
+      --sky: #eaf3ff;
+      --ink: #1d2939;
+      --muted: #667085;
+      --line: #d8e1ec;
+      --white: #ffffff;
+      --surface: #f6f8fb;
+      --green: #1f9d67;
+      --shadow: 0 14px 36px rgba(16, 42, 67, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--white);
+      line-height: 1.65;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; }
+    .container { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: 72px;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid rgba(216, 225, 236, 0.8);
+      backdrop-filter: blur(12px);
+    }
+    .nav-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 1.15rem; font-weight: 800; color: var(--navy); }
+    .brand-mark { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 10px; background: var(--blue); color: white; }
+    .brand-mark svg { width: 22px; height: 22px; }
+    .nav-links { display: flex; align-items: center; gap: 26px; font-size: 0.93rem; font-weight: 700; }
+    .nav-links a { position: relative; padding: 24px 0 20px; }
+    .nav-links a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 17px; height: 2px; background: var(--blue); transition: right 0.2s; }
+    .nav-links a:hover::after, .nav-links a.active::after { right: 0; }
+    .menu-button { display: none; border: 0; background: transparent; color: var(--navy); padding: 8px; cursor: pointer; }
+    .menu-button svg { width: 28px; height: 28px; }
+
+    .hero { overflow: hidden; background: linear-gradient(135deg, #f8fbff 0%, #edf5ff 100%); border-bottom: 1px solid var(--line); }
+    .hero-grid { min-height: 520px; display: grid; grid-template-columns: 1.08fr 0.92fr; align-items: center; gap: 50px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px; color: var(--blue-dark); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 28px; height: 2px; background: var(--blue); }
+    h1 { margin: 0 0 18px; max-width: 720px; color: var(--navy); font-size: clamp(2.5rem, 5vw, 4.7rem); line-height: 1.02; letter-spacing: -0.045em; }
+    h1 span { color: var(--blue); }
+    .hero p { max-width: 620px; margin: 0 0 28px; color: var(--muted); font-size: 1.08rem; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 20px; border-radius: 9px; font-size: 0.92rem; font-weight: 800; transition: 0.2s ease; }
+    .button-primary { color: white; background: var(--blue); box-shadow: 0 10px 20px rgba(22, 119, 255, 0.18); }
+    .button-primary:hover { background: var(--blue-dark); transform: translateY(-2px); }
+    .button-secondary { color: var(--navy); background: white; border: 1px solid var(--line); }
+    .button-secondary:hover { border-color: var(--blue); color: var(--blue); }
+
+    .hero-visual { position: relative; min-height: 390px; }
+    .server-card { position: absolute; width: 360px; right: 4px; top: 50%; transform: translateY(-50%); padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: white; box-shadow: var(--shadow); }
+    .server-top { height: 36px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); margin-bottom: 12px; padding-bottom: 10px; }
+    .server-dots { display: flex; gap: 5px; }
+    .server-dots i { width: 7px; height: 7px; border-radius: 50%; background: #b9c5d3; }
+    .server-status { color: var(--green); font-size: 0.72rem; font-weight: 800; }
+    .rack-row { height: 64px; margin-top: 8px; display: grid; grid-template-columns: 55px 1fr auto; align-items: center; gap: 12px; padding: 8px 12px; border-radius: 9px; background: var(--surface); }
+    .server-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 7px; color: var(--blue); background: var(--sky); }
+    .server-icon svg { width: 24px; }
+    .server-name strong, .server-name small { display: block; }
+    .server-name strong { font-size: 0.78rem; color: var(--navy); }
+    .server-name small { font-size: 0.67rem; color: var(--muted); }
+    .leds { display: flex; gap: 4px; }
+    .leds i { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+    .floating-badge { position: absolute; z-index: 2; right: -18px; bottom: 22px; width: 150px; padding: 14px; border-radius: 12px; color: var(--navy); background: white; border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .floating-badge strong { display: block; font-size: 1.2rem; }
+    .floating-badge span { color: var(--muted); font-size: 0.72rem; }
+
+    section { padding: 88px 0; }
+    .section-heading { max-width: 680px; margin: 0 auto 44px; text-align: center; }
+    .section-heading .eyebrow { margin-bottom: 10px; }
+    .section-heading h2 { margin: 0 0 12px; color: var(--navy); font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1; letter-spacing: -0.03em; }
+    .section-heading p { margin: 0; color: var(--muted); }
+
+    #pathway { background: var(--surface); }
+    .timeline { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .timeline::before { content: ""; position: absolute; z-index: 0; top: 38px; left: 16%; right: 16%; height: 3px; background: var(--line); }
+    .career-card { position: relative; z-index: 1; padding: 0 24px 28px; border-top: 0; text-align: left; }
+    .level-marker { width: 76px; height: 76px; margin: 0 0 18px; display: grid; place-items: center; border: 9px solid var(--surface); border-radius: 50%; color: white; background: var(--blue); font-weight: 900; box-shadow: 0 0 0 1px var(--line); }
+    .level-marker.intermediate { background: var(--navy); }
+    .level-marker.advanced { background: var(--green); }
+    .career-card-inner { min-height: 350px; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: white; transition: 0.2s ease; }
+    .career-card-inner:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .level-label { color: var(--blue); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+    .career-card h3 { margin: 8px 0 8px; color: var(--navy); font-size: 1.25rem; }
+    .career-card p { margin: 0 0 16px; color: var(--muted); font-size: 0.88rem; }
+    .card-list { margin: 0; padding-left: 18px; color: var(--ink); font-size: 0.84rem; }
+    .card-list li { margin: 5px 0; }
+    .card-list li::marker { color: var(--blue); }
+
+    .skills-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+    .skill-card { padding: 22px 18px; border: 1px solid var(--line); border-radius: 12px; background: white; transition: 0.2s; }
+    .skill-card:hover { border-color: #b9d2f5; background: var(--sky); }
+    .skill-icon { width: 44px; height: 44px; margin-bottom: 16px; display: grid; place-items: center; border-radius: 9px; color: var(--blue); background: var(--sky); }
+    .skill-icon svg { width: 22px; height: 22px; }
+    .skill-card h3 { margin: 0 0 8px; color: var(--navy); font-size: 1rem; }
+    .skill-card p { margin: 0; color: var(--muted); font-size: 0.82rem; line-height: 1.55; }
+
+    #roles { background: var(--navy); color: white; }
+    #roles .section-heading h2 { color: white; }
+    #roles .section-heading p { color: #b7c8d8; }
+    #roles .eyebrow { color: #7db0ff; }
+    .role-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .role-card { position: relative; min-height: 260px; padding: 28px; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; background: rgba(255,255,255,0.055); }
+    .role-number { position: absolute; right: 22px; top: 16px; color: rgba(255,255,255,0.08); font-size: 3.7rem; font-weight: 900; line-height: 1; }
+    .role-card h3 { margin: 8px 0 12px; font-size: 1.25rem; }
+    .role-card p { margin: 0; color: #b7c8d8; font-size: 0.88rem; }
+    .role-card strong { color: #8ebaff; }
+
+    .tools-layout { display: grid; grid-template-columns: 1fr 0.82fr; gap: 44px; align-items: start; }
+    .list-heading { margin: 0 0 16px; color: var(--navy); font-size: 1.35rem; }
+    .skill-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .skill-row { display: flex; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 10px; background: white; }
+    .check { flex: 0 0 24px; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; color: var(--blue); background: var(--sky); font-size: 0.8rem; font-weight: 900; }
+    .skill-row strong { display: block; color: var(--navy); font-size: 0.88rem; }
+    .skill-row span { display: block; color: var(--muted); font-size: 0.76rem; }
+    .tool-panel { padding: 24px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+    .tool-item { display: grid; grid-template-columns: 46px 1fr; gap: 13px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .tool-item:last-child { border-bottom: 0; }
+    .tool-logo { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 10px; color: white; background: var(--blue); font-size: 0.75rem; font-weight: 900; }
+    .tool-item:nth-child(3) .tool-logo { background: var(--navy); }
+    .tool-item:nth-child(4) .tool-logo { background: var(--green); }
+    .tool-item strong { color: var(--navy); font-size: 0.9rem; }
+    .tool-item p { margin: 2px 0 0; color: var(--muted); font-size: 0.76rem; }
+
+    #about { background: var(--surface); }
+    .about-card { display: grid; grid-template-columns: 280px 1fr; gap: 42px; align-items: center; max-width: 930px; margin: auto; padding: 38px; border: 1px solid var(--line); border-radius: 18px; background: white; box-shadow: var(--shadow); }
+    .profile-panel { min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 14px; text-align: center; color: white; background: linear-gradient(145deg, var(--blue), var(--navy)); overflow: hidden; }
+    .profile-image { width: 130px; height: 130px; margin-bottom: 14px; object-fit: cover; border: 6px solid rgba(255,255,255,0.18); border-radius: 50%; background: white; box-shadow: 0 12px 25px rgba(9, 27, 44, 0.18); }
+    .profile-panel strong { font-size: 1.1rem; }
+    .profile-panel span { margin-top: 4px; color: #cfe0f2; font-size: 0.78rem; }
+    .about-copy .eyebrow { margin-bottom: 8px; }
+    .about-copy h2 { margin: 0 0 12px; color: var(--navy); font-size: 2rem; line-height: 1.1; }
+    .about-copy > p { margin: 0 0 18px; color: var(--muted); }
+    .goal-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .goal-box div { padding: 14px; border-radius: 9px; background: var(--surface); border-left: 3px solid var(--blue); }
+    .goal-box strong { display: block; color: var(--navy); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .goal-box span { color: var(--muted); font-size: 0.82rem; }
+
+    footer { padding: 28px 0; color: #9fb3c7; background: #091b2c; font-size: 0.82rem; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; }
+    footer strong { color: white; }
+
+    @media (max-width: 980px) {
+      .hero-grid { grid-template-columns: 1fr 0.75fr; gap: 20px; }
+      .server-card { width: 320px; }
+      .skills-grid { grid-template-columns: repeat(3, 1fr); }
+      .skill-card:nth-child(4), .skill-card:nth-child(5) { grid-column: span 1; }
+      .tools-layout { grid-template-columns: 1fr 0.7fr; }
+    }
+    @media (max-width: 760px) {
+      html { scroll-padding-top: 72px; }
+      .container { width: min(100% - 28px, 1120px); }
+      .navbar { height: 64px; }
+      .menu-button { display: block; }
+      .nav-links { position: absolute; left: 14px; right: 14px; top: 70px; display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 8px; border: 1px solid var(--line); border-radius: 12px; background: white; box-shadow: var(--shadow); }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 12px 14px; border-radius: 7px; }
+      .nav-links a::after { display: none; }
+      .nav-links a:hover { background: var(--surface); }
+      section { padding: 68px 0; }
+      .hero-grid { min-height: auto; grid-template-columns: 1fr; padding: 58px 0 48px; }
+      .hero-visual { min-height: 330px; }
+      .server-card { left: 50%; right: auto; width: min(350px, 88%); transform: translate(-50%, -50%); }
+      .floating-badge { right: 4px; bottom: 10px; }
+      .timeline { grid-template-columns: 1fr; gap: 12px; }
+      .timeline::before { top: 38px; bottom: 38px; left: 37px; right: auto; width: 3px; height: auto; }
+      .career-card { display: grid; grid-template-columns: 76px 1fr; gap: 14px; padding: 0; }
+      .career-card-inner { min-height: 0; }
+      .skills-grid, .role-grid { grid-template-columns: 1fr; }
+      .skill-card:nth-child(4), .skill-card:nth-child(5) { grid-column: auto; }
+      .tools-layout { grid-template-columns: 1fr; }
+      .about-card { grid-template-columns: 1fr; padding: 24px; }
+      .profile-panel { min-height: 260px; }
+      .footer-inner { gap: 12px; flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 520px) {
+      h1 { font-size: 2.55rem; }
+      .hero-actions .button { width: 100%; }
+      .hero-visual { min-height: 300px; }
+      .server-card { width: 94%; }
+      .floating-badge { width: 130px; }
+      .career-card { grid-template-columns: 62px 1fr; gap: 8px; }
+      .level-marker { width: 62px; height: 62px; border-width: 7px; }
+      .timeline::before { left: 30px; }
+      .career-card-inner { padding: 18px; }
+      .skill-list, .goal-box { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a class="brand" href="#home" aria-label="SysPath home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01M11 7h6M11 17h6"/></svg>
+        </span>
+        SysPath
+      </a>
+      <button class="menu-button" id="menuButton" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a class="active" href="#home">Home</a>
+        <a href="#pathway">Career Pathway</a>
+        <a href="#skills">Skills</a>
+        <a href="#roles">Job Roles</a>
+        <a href="#tools">Tools</a>
+        <a href="#about">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">System Administration</div>
+        <h1>Build a career that <span>keeps systems running.</span></h1>
+        <p>Explore the skills, responsibilities, and career progression needed to become a dependable IT professional in modern system administration.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#pathway">Explore Career Path <span aria-hidden="true">→</span></a>
+          <a class="button button-secondary" href="#skills">View Required Skills</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-label="Illustration of managed servers">
+        <div class="server-card">
+          <div class="server-top"><div class="server-dots"><i></i><i></i><i></i></div><div class="server-status">● All systems operational</div></div>
+          <div class="rack-row"><div class="server-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01M11 7h6M11 17h6"/></svg></div><div class="server-name"><strong>PRODUCTION-01</strong><small>Windows Server</small></div><div class="leds"><i></i><i></i><i></i></div></div>
+          <div class="rack-row"><div class="server-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01M11 7h6M11 17h6"/></svg></div><div class="server-name"><strong>WEB-SERVER-02</strong><small>Linux Ubuntu</small></div><div class="leds"><i></i><i></i><i></i></div></div>
+          <div class="rack-row"><div class="server-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01M11 7h6M11 17h6"/></svg></div><div class="server-name"><strong>BACKUP-NAS-01</strong><small>Network Storage</small></div><div class="leds"><i></i><i></i><i></i></div></div>
+        </div>
+        <div class="floating-badge"><strong>99.9%</strong><span>Target uptime</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="pathway">
+      <div class="container">
+        <div class="section-heading"><div class="eyebrow">Career Progression</div><h2>System Administrator Pathway</h2><p>Build practical experience step by step and advance toward infrastructure leadership.</p></div>
+        <div class="timeline">
+          <article class="career-card"><div class="level-marker">01</div><div class="career-card-inner"><span class="level-label">Entry Level</span><h3>IT Support Technician</h3><p>Provides first-line technical assistance and resolves basic issues for users and devices.</p><ul class="card-list"><li>Triage service tickets and remote calls</li><li>Configure workstations and peripherals</li><li>Reset accounts and basic permissions</li><li>Document solutions and escalation</li></ul></article>
+          <article class="career-card"><div class="level-marker intermediate">02</div><div class="career-card-inner"><span class="level-label">Intermediate</span><h3>Junior System Administrator</h3><p>Maintains servers, operating systems, user access, updates, and routine infrastructure tasks.</p><ul class="card-list"><li>Manage accounts and permissions</li><li>Monitor health and apply updates</li><li>Perform backups and recovery tests</li><li>Automate routine administrative work</li></ul></article>
+          <article class="career-card"><div class="level-marker advanced">03</div><div class="career-card-inner"><span class="level-label">Advanced</span><h3>Senior System Administrator</h3><p>Owns complex infrastructure, leads projects, improves security, and supports team development.</p><ul class="card-list"><li>Design resilient infrastructure</li><li>Plan migrations and capacity</li><li>Strengthen security and compliance</li><li>Mentor junior technical staff</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <div class="section-heading"><div class="eyebrow">Core Knowledge</div><h2>Skills & Qualifications</h2><p>Five essential areas build the foundation for a reliable System Administration career.</p></div>
+        <div class="skills-grid">
+          <article class="skill-card"><div class="skill-icon">OS</div><h3>Operating Systems</h3><p>Manage Windows, Linux, and macOS configurations, services, patches, and permissions.</p></article>
+          <article class="skill-card"><div class="skill-icon">N</div><h3>Networking</h3><p>Understand IP addressing, DNS, DHCP, routing, VPNs, and how devices communicate.</p></article>
+          <article class="skill-card"><div class="skill-icon">T</div><h3>Troubleshooting</h3><p>Diagnose incidents methodically using logs, testing, and clear documentation.</p></article>
+          <article class="skill-card"><div class="skill-icon">S</div><h3>Security</h3><p>Apply access control, patching, encryption, backup, and threat-prevention practices.</p></article>
+          <article class="skill-card"><div class="skill-icon">&lt;/&gt;</div><h3>Scripting</h3><p>Automate repetitive work and reporting with PowerShell, Bash, or Python.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="roles">
+      <div class="container">
+        <div class="section-heading"><div class="eyebrow">Team Positions</div><h2>Job Roles & Responsibilities</h2><p>Related roles work at different levels of the technology environment.</p></div>
+        <div class="role-grid">
+          <article class="role-card"><span class="role-number">01</span><h3>Help Desk Technician</h3><p><strong>Primary focus: users.</strong> Receives and resolves support requests, diagnoses common hardware or software problems, and escalates issues requiring deeper access.</p></article>
+          <article class="role-card"><span class="role-number">02</span><h3>System Administrator</h3><p><strong>Primary focus: infrastructure.</strong> Maintains servers, networks, accounts, backups, and security controls while ensuring applications remain available and performant.</p></article>
+          <article class="role-card"><span class="role-number">03</span><h3>Systems Engineer</h3><p><strong>Primary focus: architecture.</strong> Designs and improves enterprise systems, automates deployment, evaluates platforms, and leads complex technology projects.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="tools">
+      <div class="container">
+        <div class="section-heading"><div class="eyebrow">Professional Toolkit</div><h2>Required Skills & Tools</h2><p>Combine technical knowledge with practical platforms used in real IT environments.</p></div>
+        <div class="tools-layout">
+          <div>
+            <h3 class="list-heading">Technical Skills</h3>
+            <div class="skill-list">
+              <div class="skill-row"><span class="check">✓</span><div><strong>Server Administration</strong><span>Manage services and resources</span></div></div>
+              <div class="skill-row"><span class="check">✓</span><div><strong>Cloud Fundamentals</strong><span>Understand virtual infrastructure</span></div></div>
+              <div class="skill-row"><span class="check">✓</span><div><strong>Backup & Recovery</strong><span>Protect and restore business data</span></div></div>
+              <div class="skill-row"><span class="check">✓</span><div><strong>Identity Management</strong><span>Control users and permissions</span></div></div>
+              <div class="skill-row"><span class="check">✓</span><div><strong>Documentation</strong><span>Record procedures and changes</span></div></div>
+              <div class="skill-row"><span class="check">✓</span><div><strong>IT Service Management</strong><span>Track incidents and requests</span></div></div>
+            </div>
+          </div>
+          <aside class="tool-panel">
+            <h3 class="list-heading">Tools & Technologies</h3>
+            <div class="tool-item"><div class="tool-logo">AD</div><div><strong>Active Directory</strong><p>Centralizes identities, devices, and permissions.</p></div></div>
+            <div class="tool-item"><div class="tool-logo">VM</div><div><strong>Virtualization</strong><p>Runs isolated servers efficiently with VMware or Hyper-V.</p></div></div>
+            <div class="tool-item"><div class="tool-logo">AZ</div><div><strong>Microsoft Azure</strong><p>Provides cloud compute, storage, and identity services.</p></div></div>
+            <div class="tool-item"><div class="tool-logo">PS</div><div><strong>PowerShell</strong><p>Automates system tasks and configuration management.</p></div></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="about-card">
+          <div class="profile-panel"><img class="profile-image" src="Professional Portrait in Formal Attire (1).png" alt="John Mike Angelo Sandoval portrait"><strong>John Mike Angelo Sandoval</strong><span>BS Information Technology Student</span></div>
+          <div class="about-copy"><div class="eyebrow">About the Developer</div><h2>Building reliable IT careers starts with learning.</h2><p>I am a BS Information Technology student interested in technology operations, infrastructure, and security. This portfolio presents a practical pathway for developing the knowledge needed to support modern organizations.</p><div class="goal-box"><div><strong>Preferred Career Path</strong><span>System Administration → Systems Engineer</span></div><div><strong>Professional Goal</strong><span>Build secure, resilient enterprise systems</span></div></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="container footer-inner"><span><strong>SysPath</strong> · System Administration Career Portfolio</span><span>Designed for aspiring IT professionals</span></div></footer>
+
+  <script>
+    const menuButton = document.getElementById('menuButton');
+    const navLinks = document.getElementById('navLinks');
+
+    menuButton.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuButton.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuButton.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    const sections = [...document.querySelectorAll('header[id], main section[id]')];
+    const links = [...document.querySelectorAll('.nav-links a')];
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          links.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id));
+        }
+      });
+    }, { rootMargin: '-35% 0px -55% 0px' });
+    sections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>
